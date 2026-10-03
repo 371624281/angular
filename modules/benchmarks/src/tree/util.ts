@@ -1,9 +1,9 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
+ * found in the LICENSE file at https://angular.dev/license
  */
 
 import {getIntParameter} from '../util';
@@ -13,25 +13,33 @@ export class TreeNode {
   children: TreeNode[];
 
   constructor(
-      public value: string, public depth: number, public maxDepth: number, public left: TreeNode,
-      public right: TreeNode) {
-    this.transitiveChildCount = Math.pow(2, (this.maxDepth - this.depth + 1)) - 1;
-    this.children = this.left ? [this.left, this.right] : [];
+    public value: string,
+    public depth: number,
+    public maxDepth: number,
+    public left: TreeNode | null,
+    public right: TreeNode | null,
+  ) {
+    this.transitiveChildCount = Math.pow(2, this.maxDepth - this.depth + 1) - 1;
+    this.children = this.left ? [this.left, this.right!] : [];
   }
 
   // Needed for Polymer as it does not support ternary nor modulo operator
   // in expressions
-  get style(): string { return this.depth % 2 === 0 ? 'background-color: grey' : ''; }
+  get style(): string {
+    return this.depth % 2 === 0 ? 'background-color: grey' : '';
+  }
 }
 
 let treeCreateCount: number;
-export let maxDepth: number;
+let maxDepth: number;
 let numberData: TreeNode;
 let charData: TreeNode;
 
-init();
+export function getMaxDepth() {
+  return maxDepth;
+}
 
-function init() {
+export function initTreeUtils() {
   maxDepth = getIntParameter('depth');
   treeCreateCount = 0;
   numberData = _buildTree(0, numberValues);
@@ -67,4 +75,14 @@ export function flattenTree(node: TreeNode, target: TreeNode[] = []): TreeNode[]
     flattenTree(node.right, target);
   }
   return target;
+}
+
+export function newArray<T = any>(size: number): T[];
+export function newArray<T>(size: number, value: T): T[];
+export function newArray<T>(size: number, value?: T): T[] {
+  const list: T[] = [];
+  for (let i = 0; i < size; i++) {
+    list.push(value!);
+  }
+  return list;
 }

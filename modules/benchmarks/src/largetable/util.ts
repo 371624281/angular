@@ -1,26 +1,28 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
+ * found in the LICENSE file at https://angular.dev/license
  */
 
 import {getIntParameter} from '../util';
 
 export class TableCell {
-  constructor(public row: number, public col: number, public value: string) {}
+  constructor(
+    public row: number,
+    public col: number,
+    public value: string,
+  ) {}
 }
 
 let tableCreateCount: number;
-export let maxRow: number;
-export let maxCol: number;
+let maxRow: number;
+let maxCol: number;
 let numberData: TableCell[][];
 let charData: TableCell[][];
 
-init();
-
-function init() {
+export function initTableUtils() {
   maxRow = getIntParameter('rows');
   maxCol = getIntParameter('cols');
   tableCreateCount = 0;

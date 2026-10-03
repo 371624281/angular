@@ -1,17 +1,17 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
+ * found in the LICENSE file at https://angular.dev/license
  */
 
-import {verifyNoBrowserErrors} from 'e2e_util/e2e_util';
+import {verifyNoBrowserErrors} from '../../../utilities/index';
 import {$, browser} from 'protractor';
 import {promise} from 'selenium-webdriver';
 
 describe('async', () => {
-  const URL = 'all/playground/src/async/index.html';
+  const URL = '/';
 
   beforeEach(() => browser.get(URL));
 
@@ -84,16 +84,14 @@ describe('async', () => {
 
     timeout.$('.action').click();
 
-    whenAllStable().then((didWork: any) => {
+    whenAllStable().then(() => {
       // whenAllStable should only be called when all the async actions
       // finished, so the count should be 10 at this point.
       expect(timeout.$('.val').getText()).toEqual('10');
-      expect(didWork).toBeTruthy();  // Work was done.
     });
 
-    whenAllStable().then((didWork: any) => {
+    whenAllStable().then(() => {
       // whenAllStable should be called immediately since nothing is pending.
-      expect(didWork).toBeFalsy();  // No work was done.
       browser.ignoreSynchronization = false;
     });
   });

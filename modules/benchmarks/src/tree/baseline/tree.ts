@@ -1,15 +1,15 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
+ * found in the LICENSE file at https://angular.dev/license
  */
 
-import {TreeNode} from '../util';
+import {newArray, TreeNode} from '../util';
 
 export class TreeComponent {
-  private _renderNodes: any[];
+  private _renderNodes!: any[];
 
   constructor(private _rootEl: any) {}
 
@@ -25,7 +25,7 @@ export class TreeComponent {
 
   private _create(parentNode: any, dataNode: TreeNode, index: number) {
     if (!this._renderNodes) {
-      this._renderNodes = new Array(dataNode.transitiveChildCount);
+      this._renderNodes = newArray(dataNode.transitiveChildCount);
     }
 
     const span = document.createElement('span');
@@ -44,7 +44,7 @@ export class TreeComponent {
     if (dataNode.right) {
       const rightTree = document.createElement('tree');
       parentNode.appendChild(rightTree);
-      this._create(rightTree, dataNode.right, index + dataNode.left.transitiveChildCount + 1);
+      this._create(rightTree, dataNode.right, index + dataNode.left!.transitiveChildCount + 1);
     }
   }
 
@@ -58,12 +58,12 @@ export class TreeComponent {
       this._update(dataNode.left, index + 1);
     }
     if (dataNode.right) {
-      this._update(dataNode.right, index + dataNode.left.transitiveChildCount + 1);
+      this._update(dataNode.right, index + dataNode.left!.transitiveChildCount + 1);
     }
   }
 
   private _destroy() {
     while (this._rootEl.lastChild) this._rootEl.lastChild.remove();
-    this._renderNodes = null;
+    this._renderNodes = [];
   }
 }
